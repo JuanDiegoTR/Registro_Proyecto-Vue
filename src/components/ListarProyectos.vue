@@ -1,6 +1,12 @@
 <template>
     <div :key="componentKey" class="container mx-auto">
        <input type="text" v-model="filtroNombre" placeholder="Filtrar por nombre" class="form-control mb-3 mx-1 ">
+       <select v-model="filtroEstado" class="form-select mb-3 mx-1">
+           <option value="">Todos los estados</option>
+           <option value="Pendiente">Pendiente</option>
+           <option value="En progreso">En progreso</option>
+           <option value="Completada">Completada</option>
+       </select>
        <ul class="list-group flex-column overflow-y-auto h-300 overflow-hidden">
         <li class="list-group-item" v-for="tarea in tareasFiltradas" :key="tarea.id">
            <div>
@@ -38,15 +44,20 @@ export default {
        return {
          localTareas: [],
          filtroNombre: '', // Propiedad para el filtro de nombre
+         filtroEstado: '', // Propiedad para el filtro de estado
          componentKey: 0 // Clave para forzar la recarga del componente
        };
     },
     computed: {
         tareasFiltradas() {
-            if (!this.filtroNombre) {
-                return this.localTareas;
+            let tareasFiltradas = this.localTareas;
+            if (this.filtroNombre) {
+                tareasFiltradas = tareasFiltradas.filter(tarea => tarea.nombre.toLowerCase().includes(this.filtroNombre.toLowerCase()));
             }
-            return this.localTareas.filter(tarea => tarea.nombre.toLowerCase().includes(this.filtroNombre.toLowerCase()));
+            if (this.filtroEstado) {
+                tareasFiltradas = tareasFiltradas.filter(tarea => tarea.estado === this.filtroEstado);
+            }
+            return tareasFiltradas;
         }
     },
     watch: {
