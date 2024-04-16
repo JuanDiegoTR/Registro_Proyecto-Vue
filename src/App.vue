@@ -1,15 +1,15 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <GestioProyectos msg="Welcome to Your Vue.js App"/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import GestioProyectos from './components/GestioProyectos.vue'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    GestioProyectos
   }
 }
 </script>
