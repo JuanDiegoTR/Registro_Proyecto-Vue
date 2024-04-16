@@ -1,31 +1,26 @@
 <template>
   <h1>Agregar tarea</h1>
-  <div class="container">
-     <form @submit.prevent="submitForm">
-       <div class="mb-3">
-         <label for="nombre" class="form-label">Nombre</label>
-         <input type="text" class="form-control" id="nombre" v-model="form.nombre">
-       </div>
-       <div class="d-flex">
-         <div class="mb-3 w-100">
-           <label for="mensaje" class="form-label">Mensaje</label>
-           <textarea class="form-control" id="mensaje" rows="2" v-model="form.mensaje"></textarea>
-         </div>
-         <div class="d-flex flex-column form-check justify-content-center align-content-center">
-           <label class="form-check-label" for="estado">Estado</label>
-           <select class="form-select" id="estado" v-model="form.estado">
-             <option value="Pendiente">Pendiente</option>
-             <option value="En progreso">En progreso</option>
-             <option value="Completada">Completada</option>
-           </select>
-         </div>
-       </div>
-       <div v-if="errorMessage" class="alert alert-danger" role="alert">
-         {{ errorMessage }}
-       </div>
-       <button type="submit" class="btn btn-primary">Enviar</button>
-     </form>
-  </div>
+  <div class="container container-border">
+      <form @submit.prevent="submitForm">
+        <div class="mb-3">
+          <input type="text" placeholder="Nombre" class="mt-4 form-control" id="nombre" v-model="form.nombre">
+        </div>
+        <div class="d-flex flex-column mb-3">
+          <div class="mb-3 w-100">
+            <textarea placeholder="Agregar Mensaje" class="form-control" id="mensaje" rows="2" v-model="form.mensaje"></textarea>
+          </div>
+          <select class="form-select" id="estado" v-model="form.estado">
+            <option value="Pendiente">Pendiente</option>
+            <option value="En progreso">En progreso</option>
+            <option value="Completada">Completada</option>
+          </select>
+        </div>
+        <div v-if="errorMessage" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
+        <button type="submit" class="btn btn-primary  mb-3">Enviar</button>
+      </form>
+    </div>
  </template>
  
  <script>
@@ -97,4 +92,9 @@
   }
  }
  </script>
- 
+<style>
+  .container-border {
+    border: solid rgba(0, 0, 0, 0.25) 1px;
+    border-radius: 14px;
+  }
+</style>
