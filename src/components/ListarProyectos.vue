@@ -1,7 +1,7 @@
 <template>
     <div :key="componentKey" class="container mx-auto">
        <input type="text" v-model="filtroNombre" placeholder="Filtrar por nombre" class="form-control mb-3 mx-1 ">
-       <ul class="list-group flex-column-reverse overflow-y-auto h-300 overflow-hidden">
+       <ul class="list-group flex-column overflow-y-auto h-300 overflow-hidden">
         <li class="list-group-item" v-for="tarea in tareasFiltradas" :key="tarea.id">
            <div>
              <strong>Nombre:</strong> {{ tarea.nombre }}
