@@ -2,12 +2,21 @@
     <h1>Listar Tareas</h1>
     <div :key="componentKey" class="container mx-auto">
        <input type="text" v-model="filtroNombre" placeholder="Filtrar por nombre" class="form-control mb-3 mx-1 ">
-       <select v-model="filtroEstado" class="form-select mb-3 mx-1">
-           <option value="">Todos los estados</option>
-           <option value="Pendiente">Pendiente</option>
-           <option value="En progreso">En progreso</option>
-           <option value="Completada">Completada</option>
-       </select>
+       <div class="d-flex gap-2">
+            <select v-model="filtroEstado" class="form-select mb-3 mx-1">
+                <option value="">Todos los estados</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="En progreso">En progreso</option>
+                <option value="Completada">Completada</option>
+            </select>
+            <select v-model="filtroProyecto" class="form-select mb-3 mx-1">
+                <option value="">Todos los proyectos</option>
+                <option v-for="proyecto in proyectos" :key="proyecto.id" :value="proyecto.id">
+                    {{ proyecto.nombre }}
+                </option>
+            </select>
+       </div>
+
        <ul class="list-group flex-column overflow-y-auto h-300 overflow-hidden">
         <li class="list-group-item" v-for="tarea in tareasFiltradas" :key="tarea.id">
            <div class="d-flex flex-column">
@@ -46,22 +55,40 @@ export default {
         return {
             localTareas: [...this.tareas], // Corrección aquí
             filtroNombre: '', // Propiedad para el filtro de nombre
+            filtroProyecto: '',
             filtroEstado: '', // Propiedad para el filtro de estado
-            componentKey: 0 // Clave para forzar la recarga del componente
+            componentKey: 0, // Clave para forzar la recarga del componente
+
+            proyectos: [],
+            proyectosMap: {},
         };
     },
-
-    computed: {
-        tareasFiltradas() {
-            let tareasFiltradas = this.localTareas;
-            if (this.filtroNombre) {
-                tareasFiltradas = tareasFiltradas.filter(tarea => tarea.nombre.toLowerCase().includes(this.filtroNombre.toLowerCase()));
-            }
-            if (this.filtroEstado) {
-                tareasFiltradas = tareasFiltradas.filter(tarea => tarea.estado === this.filtroEstado);
-            }
-            return tareasFiltradas;
+    created() {
+        const savedProyectos = localStorage.getItem('listaProyectos');
+        if (savedProyectos) {
+            this.proyectos = JSON.parse(savedProyectos);
+            // Actualiza el mapa de proyectos
+            this.proyectos.forEach(proyecto => {
+                this.proyectosMap[proyecto.id] = proyecto.nombre;
+            });
         }
+    },
+    computed: {
+    tareasFiltradas() {
+        let tareasFiltradas = this.localTareas;
+        if (this.filtroNombre) {
+            tareasFiltradas = tareasFiltradas.filter(tarea => tarea.nombre.toLowerCase().includes(this.filtroNombre.toLowerCase()));
+        }
+        if (this.filtroEstado) {
+            tareasFiltradas = tareasFiltradas.filter(tarea => tarea.estado === this.filtroEstado);
+        }
+        if (this.filtroProyecto) {
+            // Usa el mapa para encontrar el nombre del proyecto
+            const nombreProyecto = this.proyectosMap[this.filtroProyecto];
+            tareasFiltradas = tareasFiltradas.filter(tarea => tarea.proyecto === nombreProyecto);
+        }
+        return tareasFiltradas;
+    }
     },
     watch: {
         tareas(newTareas) {
