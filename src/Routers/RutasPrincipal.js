@@ -6,8 +6,8 @@ import GestionProyectos from '@/components/GestionProyectos.vue';
 const routes = [
  { path: '/', component: GestionProyectos },
  { path: '/agregar-proyecto', name: 'AgregarProyectos', component: AgregarProyectos },
- { path: '/agregar-tarea/:proyectoId', name: 'AgregarTarea', component: AgregarTarea },
- { path: '/agregar-tarea', name: 'AgregarTarea', component: AgregarTarea }
+ { path: '/agregar-tarea/:proyectoId?', name: 'AgregarTarea', component: AgregarTarea },
+ 
    
 ];
 
