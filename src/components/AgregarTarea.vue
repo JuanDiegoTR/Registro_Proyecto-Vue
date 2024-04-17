@@ -33,7 +33,7 @@
      </form>
   </div>
   <section class="mt-4">
-    <ListarTareas :tareas="tareas" @editar="editarTarea" @actualizarTareas="actualizarTareas" />
+    <ListarTareas :key="componentKey" :tareas="tareas" @editar="editarTarea" @actualizarTareas="actualizarTareas" />
   </section>
  </template>
 
@@ -55,14 +55,24 @@ import ListarTareas from './ListarTareas'
             nombre: '',
             mensaje: '',
             estado: 'Pendiente',
+            selectedProyectoId: '',
             proyectoId: this.$route.params.proyectoId
         },
         tareas: [],
         errorMessage: '',
         proyectos: [],
-        tareaEnEdicion: null // Nueva variable para almacenar la tarea en edición
+        tareaEnEdicion: null, // Nueva variable para almacenar la tarea en edición
+        componentKey: 0,
     };
   },
+  actualizarTareas() {
+        // Aquí puedes cargar las tareas actualizadas desde localStorage
+        // y asignarlas a localTareas
+        const savedTareas = localStorage.getItem('listaTareas');
+        if (savedTareas) {
+            this.localTareas = JSON.parse(savedTareas);
+        }
+    },
   created() {
 
     const savedTareas = localStorage.getItem('listaTareas');
@@ -99,6 +109,10 @@ import ListarTareas from './ListarTareas'
        if (newTarea) {
          this.form = { ...newTarea };
        }
+     },
+     tareas(newTareas) {
+        // Actualiza localTareas con las nuevas tareas
+        this.localTareas = [...newTareas];
      }
   },
   methods: {
@@ -146,6 +160,8 @@ import ListarTareas from './ListarTareas'
         console.log("Tarea emitida");
         this.$emit('tareaActualizada');
         this.$emit('actualizarTareas'); // Emite el evento tareaActualizada
+
+        this.componentKey++;
     },
     eliminarTarea(id) {
       const index = this.localTareas.findIndex(tarea => tarea.id === id);
